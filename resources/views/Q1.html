@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    color: black;
+	}
+	th, td {
+	    padding: 5px;
+	    text-align: left;
+	    font-weight: bold;
+	    text-align: center;
+
+	}
+
+</style>
+
+<body>
+<div id="app">
+	<h1>QUESTION 1:</h1><br><br><br>
+
+	<table style="width:100%">
+
+
+	  <tr>
+	    <th>From/To</th>
+	    <th colspan="2">A</th>
+	    <th colspan="2">B</th>
+	    <th colspan="2">C</th>
+	    <th>Supply</th>
+	    <th>OC(row)</th>
+	  </tr>
+	  <tr>
+	    <td >D</td>
+	    <td><input style="width: 50px" v-model="units_DA" :disabled="this.supp_D <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_DA">Clear</button></td>
+	    <td>$5</td>
+	    <td><input style="width: 50px" v-model="units_DB" :disabled="this.supp_D <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_DB">Clear</td>
+	    <td>$4</td>
+	    <td><input style="width: 50px" v-model="units_DC" :disabled="this.supp_D <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_DC">Clear</td>
+	    <td>$3</d>
+	    <td>{{ supp_D }}</td>
+	    <td><input style="width: 50px" v-model="oc_D" :disabled="this.supp_D <= 0 ? true: false"></td>
+	  </tr>
+	  <tr>
+	    <td>E</td>
+	    <td><input style="width: 50px" v-model="units_EA" :disabled="this.supp_E <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_EA">Clear</td>
+	    <td>$8</td>
+	    <td><input style="width: 50px" v-model="units_EB" :disabled="this.supp_E <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_EB">Clear</td>
+	    <td>$4</td>
+	    <td><input style="width: 50px" v-model="units_EC" :disabled="this.supp_E <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_EC">Clear</td>
+	    <td>$3</td>
+	    <td>{{ supp_E }}</td>
+	    <td><input style="width: 50px" v-model="oc_E" :disabled="this.supp_E <= 0 ? true: false"></td>
+	  </tr>
+	  <tr>
+	  <td>F</td>
+	  <td><input style="width: 50px" v-model="units_FA" :disabled="this.supp_F <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_FA">Clear</td>
+	  <td>$9</td>
+	  <td><input style="width: 50px" v-model="units_FB" :disabled="this.supp_F <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_FB">Clear</td>
+	  <td>$7</td>
+	  <td><input style="width: 50px" v-model="units_FC" :disabled="this.supp_F <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_FC">Clear</td>
+	  <td>$5</td>
+	  <td>{{ supp_F }}</td>
+	  <td><input style="width: 50px" v-model="oc_F" :disabled="this.supp_F <= 0 ? true: false"></td>
+	  </tr>
+	  <tr>
+	    <td >Demand</td>
+	    <td colspan="2">{{ demand_A }}</td>
+	    <td colspan="2">{{ demand_B }}</td>
+	    <td colspan="2">{{ demand_C }}</td>
+	    <td >700</td>
+	    <td></td>
+	  </tr>
+	  <tr>  
+	    <td rowspan="2">OC(col)</td>    
+	    <td colspan="2"><input style="width: 50px" v-model="oc_A" :disabled="this.demand_A <= 0 ? true: false"></td>
+	    <td colspan="2"><input style="width: 50px" v-model="oc_B" :disabled="this.demand_B <= 0 ? true: false"></td>
+	    <td colspan="2"><input style="width: 50px" v-model="oc_C" :disabled="this.demand_C <= 0 ? true: false"></td>
+	  </tr>
+
+	</table> <br><br>
+
+	
+	 <button v-on:click="cost_value"> Cost</button>
+
+</div>
+
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.js"></script>
+
+	<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+	
+	<script>
+		 
+
+		new Vue({
+			el:'#app',
+			
+			
+		 	data: {
+		 		units_DA: '',
+		 		units_DB: '',
+		 		units_DC: '',
+		 		units_EA: '',
+		 		units_EB: '',
+		 		units_EC: '',
+		 		units_FA: '',
+		 		units_FB: '',
+		 		units_FC: '',
+
+		 		supp_D: '100',		 		
+		 		supp_E: '300',
+		 		supp_F: '300',
+
+		 		demand_A: '300',
+		 		demand_B: '200',
+		 		demand_C: '200',
+
+		 		oc_A: '',
+		 		oc_B: '',
+		 		oc_C: '',
+		 		oc_D: '',
+		 		oc_E: '',
+		 		oc_F: ''
+
+		 		
+		 	},
+
+		 	watch:{
+		 		units_DA:  _.debounce(
+			 		function (newUnits){
+			 			
+			 		this.supp_D-=this.units_DA
+			 		this.demand_A-=this.units_DA	
+
+
+
+			 		},
+			 	 1000
+			 	),
+
+			 				 	
+			 	units_DB: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_D-=this.units_DB
+			 		this.demand_B-=this.units_DB	
+			 		},
+			 	 1000
+			 	),
+
+			 	units_DC: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_D-=this.units_DC
+			 		this.demand_C-=this.units_DC	
+			 		},
+			 	 1000
+			 	),
+
+			 	units_EA: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_E-=this.units_EA
+			 		this.demand_A-=this.units_EA
+			 		},
+			 	 1000
+			 	),
+
+			 	units_EB: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_E-=this.units_EB
+			 		this.demand_B-=this.units_EB
+			 		},
+			 	 1000
+			 	),
+
+			 	units_EC: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_E-=this.units_EC
+			 		this.demand_C-=this.units_EC	
+			 		},
+			 	 1000
+			 	),
+
+			 	units_FA: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_F-=this.units_FA
+			 		this.demand_A-=this.units_FA	
+			 		},
+			 	 1000
+			 	),
+
+			 	units_FB: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_F-=this.units_FB
+			 		this.demand_B-=this.units_FB	
+			 		},
+			 	 1000
+			 	),
+
+			 	units_FC: _.debounce(			 	
+				 	function (newUnits){
+			 		this.supp_F-=this.units_FC
+			 		this.demand_C-=this.units_FC
+			 		},
+			 	 1000
+			 	)
+			},	 	
+		
+
+		methods:{
+
+			cost_value: function(value){
+				
+			
+				if(this.supp_D<0 || this.supp_E<0 || this.supp_F<0)
+					alert('invalid allottments: allotted beyond supply limit')
+				
+				if(this.demand_A<0 || this.demand_B<0 || this.demand_C<0)
+					alert('invalid allottments: allotted beyond demand needs')
+				
+				else{
+					this.cost=this.units_DA*5 + this.units_DB*4 + this.units_DC*3 + this.units_EA*8 + this.units_EB*4 + this.units_EC*3 + this.units_FA*9 + this.units_FB*7 + this.units_FC*5
+
+					if(this.cost>3900)
+						alert('cost for transportation is ' + this.cost + ' Expected:3900')
+					else
+						if(this.cost==3900)
+							alert('cost for transportation is ' + this.cost + '! Correct Answer!')
+					else
+						if(this.cost<3900)
+							alert('cost for transportation is ' + this.cost + ' Try for a better solution')
+					
+				}
+
+			},
+
+			clear_DA: function (){
+			 		this.supp_D=this.supp_D*1 + this.units_DA*1
+			 		this.demand_A=this.demand_A*1 + this.units_DA*1
+			 		this.units_DA=''
+			},
+
+			clear_DB: function (){
+			 		this.supp_D=this.supp_D*1 + this.units_DB*1
+			 		this.demand_B=this.demand_B*1 + this.units_DB*1
+			 		this.units_DB=''
+			},
+
+			clear_DC: function (){
+			 		this.supp_D=this.supp_D*1 + this.units_DC*1
+			 		this.demand_C=this.demand_C*1 + this.units_DC*1
+			 		this.units_DC=''
+			},
+
+			clear_EA: function (){
+			 		this.supp_E=this.supp_E*1 + this.units_EA*1
+			 		this.demand_A=this.demand_A*1 + this.units_EA*1
+			 		this.units_EA=''
+			},
+
+			clear_EB: function (){
+			 		this.supp_E=this.supp_E*1 + this.units_EB*1
+			 		this.demand_B=this.demand_B*1 + this.units_EB*1
+			 		this.units_EB=''
+			},
+
+			clear_EC: function (){
+			 		this.supp_E=this.supp_E*1 + this.units_EC*1
+			 		this.demand_C=this.demand_C*1 + this.units_EC*1
+			 		this.units_EC=''
+			},
+
+			clear_FA: function (){
+			 		this.supp_F=this.supp_F*1 + this.units_FA*1
+			 		this.demand_A=this.demand_A*1 + this.units_FA*1
+			 		this.units_FA=''
+			},
+
+			clear_FB: function (){
+			 		this.supp_F=this.supp_F*1 + this.units_FB*1
+			 		this.demand_B=this.demand_B*1 + this.units_FB*1
+			 		this.units_FB=''
+			},
+
+			clear_FC: function (){
+			 		this.supp_F=this.supp_F*1 + this.units_FC*1
+			 		this.demand_C=this.demand_C*1 + this.units_FC*1
+			 		this.units_FC=''
+			}
+		}
+
+	})
+
+	
+ 
+	
+</script>
+<br><br><br><br>			
+	<li><a href="http://localhost:8000/">Home</a></li>
+	<li><a href="http://localhost:8000/Q1">Question 1</a></li>
+	<li><a href="http://localhost:8000/Q2">Question 2</a></li>
+	<li><a href="http://localhost:8000/Q3">Question 3</a></li>
+
+	
+</body>
+</html>
