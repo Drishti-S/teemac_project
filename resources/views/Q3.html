@@ -24,7 +24,8 @@ th, td {
 <body>
 
 <div id="app">
-	<h1>QUESTION 3:</h1><br><br><br>
+	<h1>LEVEL 3:</h1>
+	<button v-on:click="help">Help</button><br><br><br>
 
 
 	<table style="width:100%">
@@ -40,42 +41,42 @@ th, td {
 	  </tr>
 	  <tr>
 	    <td >D</td>
-	    <td><input style="width: 50px" v-model="units_DA" :disabled="this.supp_D <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_DA">Clear</button></td>
+	    <td><input style="width: 50px" v-model="units_DA"><button v-on:click="clear_DA">Clear</button></td>
 	    <td>$5</td>
-	    <td><input style="width: 50px" v-model="units_DB" :disabled="this.supp_D <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_DB">Clear</td>
+	    <td><input style="width: 50px" v-model="units_DB"><button v-on:click="clear_DB">Clear</td>
 	    <td>$4</td>
-	    <td><input style="width: 50px" v-model="units_DC" :disabled="this.supp_D <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_DC">Clear</td>
+	    <td><input style="width: 50px" v-model="units_DC"><button v-on:click="clear_DC">Clear</td>
 	    <td>$3</d>
-	    <td>{{ supp_D }}</td>
-	    <td><input style="width: 50px" v-model="oc_D" :disabled="this.supp_D <= 0 ? true: false"></td>
+	    <td><input style="width: 50px" v-model="supp_D"><button v-on:click="clear_D">Clear</td>
+	    <td><input style="width: 50px" v-model="oc_D"></td>
 	  </tr>
 	  <tr>
 	    <td>E</td>
-	    <td><input style="width: 50px" v-model="units_EA" :disabled="this.supp_E <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_EA">Clear</td>
+	    <td><input style="width: 50px" v-model="units_EA"><button v-on:click="clear_EA">Clear</td>
 	    <td>$8</td>
-	    <td><input style="width: 50px" v-model="units_EB" :disabled="this.supp_E <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_EB">Clear</td>
+	    <td><input style="width: 50px" v-model="units_EB"><button v-on:click="clear_EB">Clear</td>
 	    <td>$4</td>
-	    <td><input style="width: 50px" v-model="units_EC" :disabled="this.supp_E <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_EC">Clear</td>
+	    <td><input style="width: 50px" v-model="units_EC"><button v-on:click="clear_EC">Clear</td>
 	    <td>$3</td>
-	    <td>{{ supp_E }}</td>
-	    <td><input style="width: 50px" v-model="oc_E" :disabled="this.supp_E <= 0 ? true: false"></td>
+	    <td><input style="width: 50px" v-model="supp_E"><button v-on:click="clear_E">Clear</td>
+	    <td><input style="width: 50px" v-model="oc_E"></td>
 	  </tr>
 	  <tr>
 	  <td>F</td>
-	  <td><input style="width: 50px" v-model="units_FA" :disabled="this.supp_F <= 0 || this.demand_A<=0 ? true: false"><button v-on:click="clear_FA">Clear</td>
+	  <td><input style="width: 50px" v-model="units_FA"><button v-on:click="clear_FA">Clear</td>
 	  <td>$9</td>
-	  <td><input style="width: 50px" v-model="units_FB" :disabled="this.supp_F <= 0 || this.demand_B<=0 ? true: false"><button v-on:click="clear_FB">Clear</td>
+	  <td><input style="width: 50px" v-model="units_FB"><button v-on:click="clear_FB">Clear</td>
 	  <td>$7</td>
-	  <td><input style="width: 50px" v-model="units_FC" :disabled="this.supp_F <= 0 || this.demand_C<=0 ? true: false"><button v-on:click="clear_FC">Clear</td>
+	  <td><input style="width: 50px" v-model="units_FC"><button v-on:click="clear_FC">Clear</td>
 	  <td>$5</td>
-	  <td>{{ supp_F }}</td>
-	  <td><input style="width: 50px" v-model="oc_F" :disabled="this.supp_F <= 0 ? true: false"></td>
+	  <td><input style="width: 50px" v-model="supp_F"><button v-on:click="clear_F">Clear</td>
+	  <td><input style="width: 50px" v-model="oc_F"></td>
 	  </tr>
 	  <tr>
 	    <td >Demand</td>
-	    <td colspan="2">{{ demand_A }}</td>
-	    <td colspan="2">{{ demand_B }}</td>
-	    <td colspan="2">{{ demand_C }}</td>
+	    <td colspan="2"><input style="width: 50px" v-model="demand_A"><button v-on:click="clear_A">Clear</td>
+	    <td colspan="2"><input style="width: 50px" v-model="demand_B"><button v-on:click="clear_B">Clear</td>
+	    <td colspan="2"><input style="width: 50px" v-model="demand_C"><button v-on:click="clear_C">Clear</td>
 	    <td >700</td>
 	  </tr>
 	  <tr>  
@@ -138,86 +139,7 @@ th, td {
 		 		
 		 	},
 
-		 	watch:{
-		 		units_DA:  _.debounce(
-			 		function (newUnits){
-			 			
-			 		this.supp_D-=this.units_DA
-			 		this.demand_A-=this.units_DA	
-
-
-
-			 		},
-			 	 1000
-			 	),
-
-			 				 	
-			 	units_DB: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_D-=this.units_DB
-			 		this.demand_B-=this.units_DB	
-			 		},
-			 	 1000
-			 	),
-
-			 	units_DC: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_D-=this.units_DC
-			 		this.demand_C-=this.units_DC	
-			 		},
-			 	 1000
-			 	),
-
-			 	units_EA: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_E-=this.units_EA
-			 		this.demand_A-=this.units_EA
-			 		},
-			 	 1000
-			 	),
-
-			 	units_EB: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_E-=this.units_EB
-			 		this.demand_B-=this.units_EB
-			 		},
-			 	 1000
-			 	),
-
-			 	units_EC: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_E-=this.units_EC
-			 		this.demand_C-=this.units_EC	
-			 		},
-			 	 1000
-			 	),
-
-			 	units_FA: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_F-=this.units_FA
-			 		this.demand_A-=this.units_FA	
-			 		},
-			 	 1000
-			 	),
-
-			 	units_FB: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_F-=this.units_FB
-			 		this.demand_B-=this.units_FB	
-			 		},
-			 	 1000
-			 	),
-
-			 	units_FC: _.debounce(			 	
-				 	function (newUnits){
-			 		this.supp_F-=this.units_FC
-			 		this.demand_C-=this.units_FC
-			 		},
-			 	 1000
-			 	)
-			},	 	
-		
-
+		 
 		methods:{
 
 			cost_value: function(value){
@@ -298,7 +220,36 @@ th, td {
 			 		this.supp_F=this.supp_F*1 + this.units_FC*1
 			 		this.demand_C=this.demand_C*1 + this.units_FC*1
 			 		this.units_FC=''
+			},
+
+			clear_D: function(){
+				this.supp_D=''
+			},
+
+			clear_E: function(){
+				this.supp_E=''
+			},
+
+			clear_F: function(){
+				this.supp_F=''
+			},
+
+			clear_A: function(){
+				this.demand_A=''
+			},
+
+			clear_B: function(){
+				this.demand_B=''
+			},
+
+			clear_C: function(){
+				this.demand_C=''
+			},
+
+			help: function(){
+				alert('1. D,E,F are sources and A,B,C are destinations.\n2. Make allottments in the spaces provided.\n3. Filling OCs (opportunity costs) is optional.\n4. Click on cost button to calculate your answer.\n\n4. IN LEVEL 3:\n-->Supply and demand values must be updated by YOU.\n-->When supply/demand values become 0, corresponding input spaces will NOT be disabled.')
 			}
+
 		}
 
 	})
@@ -310,10 +261,11 @@ th, td {
 </script>
 
 			<br><br><br>
-			<li><a href="http://localhost:8000/">Home</li>
-			<li><a href="http://localhost:8000/Q1">Question 1</a></li>
-            <li><a href="http://localhost:8000/Q2">Question 2</a></li>
-            <li><a href="http://localhost:8000/Q3">Question 3</a></li>
+			<li><a href="http://localhost:8000/">Home</a></li>
+			<li><a href="http://localhost:8000/Q1">Level 1</a></li>
+			<li><a href="http://localhost:8000/Q2">Level 2</a></li>
+			<li><a href="http://localhost:8000/Q3">Level 3</a></li>
+
 	
 </body>
 </html>

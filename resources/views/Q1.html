@@ -22,7 +22,8 @@
 
 <body>
 <div id="app">
-	<h1>QUESTION 1:</h1><br><br><br>
+	<h1>LEVEL 1:</h1>
+	<button v-on:click="help">Help</button><br><br><br>
 
 	<table style="width:100%">
 
@@ -292,7 +293,13 @@
 			 		this.supp_F=this.supp_F*1 + this.units_FC*1
 			 		this.demand_C=this.demand_C*1 + this.units_FC*1
 			 		this.units_FC=''
+			},
+
+			help: function(){
+				alert('1. D,E,F are sources and A,B,C are destinations.\n2. Make allottments in the spaces provided.\n3. Filling OCs (opportunity costs) is optional.\n4. Click on cost button to calculate your answer.\n\n4. IN LEVEL 1:\n-->Supply and demand values will be updated as and when you make allottments.\n-->When supply/demand values become 0, corresponding input spaces will be disabled. This will prevent you from making wrong allottments.')
+
 			}
+
 		}
 
 	})
@@ -303,9 +310,9 @@
 </script>
 <br><br><br><br>			
 	<li><a href="http://localhost:8000/">Home</a></li>
-	<li><a href="http://localhost:8000/Q1">Question 1</a></li>
-	<li><a href="http://localhost:8000/Q2">Question 2</a></li>
-	<li><a href="http://localhost:8000/Q3">Question 3</a></li>
+	<li><a href="http://localhost:8000/Q1">Level 1</a></li>
+	<li><a href="http://localhost:8000/Q2">Level 2</a></li>
+	<li><a href="http://localhost:8000/Q3">Level 3</a></li>
 
 	
 </body>
